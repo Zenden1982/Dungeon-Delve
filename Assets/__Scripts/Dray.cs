@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dray : MonoBehaviour
+public class Dray : MonoBehaviour, IFacingMover
 {
     public enum eMode
     {
@@ -24,12 +24,14 @@ public class Dray : MonoBehaviour
 
     private Rigidbody2D rigid;
     private Animator anim;
-    private Vector3[] directions = new Vector3[]{Vector3.right, Vector3.up, Vector3.left,Vector3.down };
-    private KeyCode[] keys = new KeyCode[] {KeyCode.RightArrow,KeyCode.UpArrow, KeyCode.LeftArrow,KeyCode.DownArrow};
+    private InRoom inRm;
+    private Vector3[] directions = new Vector3[] { Vector3.right, Vector3.up, Vector3.left, Vector3.down };
+    private KeyCode[] keys = new KeyCode[] { KeyCode.RightArrow, KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow };
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        inRm = GetComponent<InRoom>();
     }
 
     private void Update()
@@ -47,13 +49,13 @@ public class Dray : MonoBehaviour
             timeAtkDone = Time.time + attackDuration;
             timeAtkNext = Time.time + attackDelay;
         }
-        if ( Time.time >= timeAtkDone)
+        if (Time.time >= timeAtkDone)
         {
             mode = eMode.idle;
         }
         if (mode != eMode.attack)
         {
-            if (dirHeld == -1 )
+            if (dirHeld == -1)
             {
                 mode = eMode.idle;
             } else
@@ -70,7 +72,7 @@ public class Dray : MonoBehaviour
                 anim.CrossFade("Dray_Attack_"+facing, 0);
                 anim.speed = 0; break;
             case eMode.idle:
-                anim.CrossFade("Dray_Walk_" + facing,0);
+                anim.CrossFade("Dray_Walk_" + facing, 0);
                 anim.speed = 0; break;
             case eMode.move:
                 vel = directions[dirHeld];
@@ -78,5 +80,40 @@ public class Dray : MonoBehaviour
                 anim.speed = 1; break;
         }
         rigid.velocity = vel * speed;
+    }
+
+    public int GetFacing()
+    {
+        return facing;
+    }
+    public bool moving
+    {
+        get
+        {
+            return (mode == eMode.move);
+        }
+    }
+    public float GetSpeed()
+    {
+        return speed;
+    }
+    public float gridMult
+    {
+        get { return inRm.gridMult; }
+    }
+    public Vector2 roomPos
+    {
+        get { return inRm.roomPos; }
+        set { inRm.roomPos=value; }
+
+    }
+    public Vector2 roomNum
+    {
+        get { return inRm.roomNum; }
+        set { inRm.roomNum = value; }
+    }
+    public Vector2 GetRoomPosOnGrid(float mult = -1)
+    {
+        return inRm.GetRoomPosOnGrid(mult);
     }
 }
