@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 7306436}
   - component: {fileID: 7306438}
   - component: {fileID: 7306437}
+  - component: {fileID: 7306439}
   m_Layer: 0
   m_Name: Skeletos
   m_TagString: Untagged
@@ -318,6 +319,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   health: 0
+--- !u!114 &7306439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7306430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 348694cdd501c4943a8552614ef7f11a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &355628637
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +343,8 @@ GameObject:
   - component: {fileID: 355628639}
   - component: {fileID: 355628638}
   - component: {fileID: 355628641}
+  - component: {fileID: 355628643}
+  - component: {fileID: 355628642}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -419,6 +434,34 @@ MonoBehaviour:
   mapTiles: {fileID: 2800000, guid: 05f072a9b020c47e581608971cc7392d, type: 3}
   mapCollisions: {fileID: 4900000, guid: 467542ec5034742a2a22975edceb6c04, type: 3}
   tilePrefab: {fileID: 6834263813100608859, guid: 5836c3b27bd41634e9e8d42ca23d76ac, type: 3}
+--- !u!114 &355628642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355628637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe942e91057b22d40bd8bb32d9173601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drayInRm: {fileID: 396031330}
+  transTime: 0.5
+--- !u!114 &355628643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355628637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 791aed68b532fa642a5589eeee7c8655, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keepInRoom: 0
+  gridMult: 1
 --- !u!1 &396031323
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +477,8 @@ GameObject:
   - component: {fileID: 396031328}
   - component: {fileID: 396031329}
   - component: {fileID: 396031330}
+  - component: {fileID: 396031331}
+  - component: {fileID: 396031332}
   m_Layer: 0
   m_Name: Dray
   m_TagString: Untagged
@@ -566,9 +611,11 @@ MonoBehaviour:
   speed: 5
   attackDuration: 0.25
   attackDelay: 0.5
+  transitionDelay: 0.5
   dirHeld: -1
   facing: 1
   mode: 0
+  numKeys: 0
   timeAtkNext: 0
 --- !u!58 &396031329
 CircleCollider2D:
@@ -585,7 +632,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.4
 --- !u!114 &396031330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +646,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keepInRoom: 0
-  gridMult: 1
+  gridMult: 0.5
+--- !u!114 &396031331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396031323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 348694cdd501c4943a8552614ef7f11a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &396031332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396031323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0c58713fa2dfe44bbcb509a72c1b93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &469848847
 GameObject:
   m_ObjectHideFlags: 0

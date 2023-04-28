@@ -1,27 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class Dray : MonoBehaviour, IFacingMover
+public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
 {
     public enum eMode
     {
         idle, move, attack, transition
     }
+
     [Header("Set in Inspector")]
     public float speed = 5;
     public float attackDuration = 0.25f;
     public float attackDelay = 0.5f;
+    public float transitionDelay = 0.5f;
 
     [Header("Set Dynamically")]
     public int dirHeld = -1;
 
     public int facing = 1;
     public eMode mode = eMode.idle;
+    public int numKeys = 0;
 
     private float timeAtkDone = 0;
     public float timeAtkNext = 0;
-
+    private float transtionDone = 0;
+    private Vector2 transtionPos;
     private Rigidbody2D rigid;
     private Animator anim;
     private InRoom inRm;
@@ -36,6 +41,14 @@ public class Dray : MonoBehaviour, IFacingMover
 
     private void Update()
     {
+        if (mode == eMode.transition)
+        {
+            rigid.velocity = Vector3.zero;
+            anim.speed = 0;
+            roomPos = transtionPos;
+            if (Time.time < transtionDone) return;
+            mode = eMode.idle;
+        }
         dirHeld = -1;
         for (int i = 0; i<4; i++)
         {
@@ -82,6 +95,49 @@ public class Dray : MonoBehaviour, IFacingMover
         rigid.velocity = vel * speed;
     }
 
+    void LateUpdate()
+    {
+        Vector2 rPos = GetRoomPosOnGrid(0.5f);
+        int doorNum;
+        for (doorNum = 0; doorNum < 4; doorNum++)
+        {
+            if (rPos == InRoom.DOORS[doorNum])
+            {
+                break;
+            }
+        }
+
+        if (doorNum > 3 || doorNum != facing) return;
+
+        Vector2 rm = roomNum;
+        switch (doorNum)
+        {
+            case 0:
+                rm.x +=1;
+                break;
+            case 1:
+                rm.y +=1;
+                break;
+            case 2:
+                rm.x -= 1;
+                break;
+            case 3:
+                rm.y -= 1;
+                break;
+        }
+
+        if (rm.x >= 0 && rm.x <= InRoom.MAX_RM_X)
+        {
+            if (rm.y >=0 && rm.y <= InRoom.MAX_RM_Y)
+            {
+                roomNum = rm;
+                transtionPos = InRoom.DOORS[(doorNum + 2) % 4];
+                roomPos = transtionPos;
+                mode = eMode.transition;
+                transtionDone = Time.time + transitionDelay;
+            }
+        }
+    }
     public int GetFacing()
     {
         return facing;
@@ -115,5 +171,11 @@ public class Dray : MonoBehaviour, IFacingMover
     public Vector2 GetRoomPosOnGrid(float mult = -1)
     {
         return inRm.GetRoomPosOnGrid(mult);
+    }
+
+    public int keyCount
+    {
+        get { return numKeys; }
+        set { numKeys = value; }
     }
 }
