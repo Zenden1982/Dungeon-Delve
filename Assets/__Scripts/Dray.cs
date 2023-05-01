@@ -29,6 +29,10 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
     public eMode mode = eMode.idle;
     public int numKeys = 0;
     public bool invincible = false;
+    public bool hasGrappler = false;
+    public Vector3 lastSafeLoc;
+    public int lastSafeFacing;
+
 
     [SerializeField]
     private int _health;
@@ -46,6 +50,7 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
     private float knockbackDone = 0;
     private float invincibleDone = 0;
     private Vector3 knockbackVel;
+    
 
     private SpriteRenderer sRend;
     private Rigidbody2D rigid;
@@ -60,6 +65,8 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
         anim = GetComponent<Animator>();
         inRm = GetComponent<InRoom>();
         health = maxHealth;
+        lastSafeLoc = transform.position;
+        lastSafeFacing = facing;
     }
 
     private void Update()
@@ -166,6 +173,8 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
                 roomNum = rm;
                 transtionPos = InRoom.DOORS[(doorNum + 2) % 4];
                 roomPos = transtionPos;
+                lastSafeLoc = transform.position;
+                lastSafeFacing = facing;
                 mode = eMode.transition;
                 transtionDone = Time.time + transitionDelay;
             }
@@ -202,6 +211,34 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
             knockbackDone = Time.time+knockbackDuration;
         }
         
+    }
+
+    void OnTriggerEnter2D(Collider2D colld)
+    {
+        PickUp pup = colld.GetComponent<PickUp>();
+        if (pup == null) return;
+
+        switch(pup.itemTupe)
+        {
+            case PickUp.eType.health:
+                health = Mathf.Min(health+2, maxHealth); break;
+            case PickUp.eType.key:
+                keyCount++;
+                break;
+            case PickUp.eType.grappler:
+                hasGrappler = true; break;  
+        }
+        Destroy(colld.gameObject);
+    }
+
+    public void ResetInRoom(int healthLoss = 0)
+    {
+        transform.position = lastSafeLoc;
+        facing = lastSafeFacing;
+        health -= healthLoss;
+
+        invincible = true;
+        invincibleDone = Time.time+ invincibleDuration;
     }
     public int GetFacing()
     {
