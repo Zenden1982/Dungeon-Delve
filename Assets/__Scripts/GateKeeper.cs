@@ -5,20 +5,20 @@ using UnityEngine;
 public class GateKeeper : MonoBehaviour
 {
     //плитки с запертыми дверьми
-    const int lockedR = 95;
+    const int lockedR = 73;
     const int lockedUR = 57;
     const int lockedUL = 56;
-    const int lockedL = 100;
-    const int lockedDL = 101;
-    const int lockedDR = 102;
+    const int lockedL = 72;
+    const int lockedDL = 88;
+    const int lockedDR = 89;
 
     //плитки с открытыми дверьми
-    const int openR = 48;
-    const int openUR = 93;
-    const int openUL = 92;
-    const int openL = 51;
-    const int openDL = 26;
-    const int openDR = 27;
+    const int openR = 77;
+    const int openUR = 61;
+    const int openUL = 60;
+    const int openL = 76;
+    const int openDL = 92;
+    const int openDR = 93;
 
     private IKeyMaster keys;
 
