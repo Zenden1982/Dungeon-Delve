@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    public Material mat;
     [Header("Set Dynamically")]
     public int x;
     public int y;
@@ -31,6 +32,7 @@ public class Tile : MonoBehaviour
         }
         tileNum = eTileNum;
         GetComponent<SpriteRenderer>().sprite = TileCamera.SPRITES[tileNum];
+        GetComponent<SpriteRenderer>().material = mat;
         SetCollider();
     }
 

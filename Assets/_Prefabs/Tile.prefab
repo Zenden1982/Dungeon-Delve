@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77631e730f6df4341b9e0af05e260c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mat: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   x: 0
   y: 0
   tileNum: 0
