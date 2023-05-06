@@ -18,11 +18,16 @@ public class CamFollowDray : MonoBehaviour
 
     private void Awake()
     {
+        Cursor.visible = false;
         inRm = GetComponent<InRoom>();
     }
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
         if (Input.GetKey(KeyCode.R) && isDead)
         {
             SceneManager.LoadScene("_Scene_Hat");

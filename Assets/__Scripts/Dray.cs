@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -76,9 +75,7 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.R) && CamFollowDray.isDead) {
-            SceneManager.LoadScene("_Scene_Hat");
-        }
+        
         if (health <= 0 || this.gameObject == null)
         {
             CamFollowDray.isDead = true;
