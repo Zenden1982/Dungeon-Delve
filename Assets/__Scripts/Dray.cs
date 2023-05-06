@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Rendering;
-
+using UnityEngine.SceneManagement;
 public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
 {
     public enum eMode
@@ -21,6 +22,7 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
     public float knockbackSpeed = 2;
     public float knockbackDuration = 0.25f;
     public float invincibleDuration = 0.5f;
+    public GameObject deadText;
 
     [Header("Set Dynamically")]
     public int dirHeld = -1;
@@ -32,7 +34,7 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
     public bool hasGrappler = false;
     public Vector3 lastSafeLoc;
     public int lastSafeFacing;
-
+    
 
     [SerializeField]
     private int _health;
@@ -51,7 +53,7 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
     private float invincibleDone = 0;
     private Vector3 knockbackVel;
     
-
+    
     private SpriteRenderer sRend;
     private Rigidbody2D rigid;
     private Animator anim;
@@ -60,6 +62,9 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
     private KeyCode[] keys = new KeyCode[] { KeyCode.RightArrow, KeyCode.UpArrow, KeyCode.LeftArrow, KeyCode.DownArrow };
     private void Awake()
     {
+        CamFollowDray.isDead = false;
+        deadText.SetActive(false);
+
         sRend = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -71,6 +76,16 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.R) && CamFollowDray.isDead) {
+            SceneManager.LoadScene("_Scene_Hat");
+        }
+        if (health <= 0 || this.gameObject == null)
+        {
+            CamFollowDray.isDead = true;
+            deadText.SetActive(true);
+            this.gameObject.SetActive(false);
+            return;
+        }
         //Отбрасывание
         if (invincible && Time.time > invincibleDone) invincible = false;
         sRend.color = invincible ? Color.red : Color.white;
@@ -133,6 +148,8 @@ public class Dray : MonoBehaviour, IFacingMover, IKeyMaster
                 anim.speed = 1; break;
         }
         rigid.velocity = vel * speed;
+       
+
     }
 
     void LateUpdate()

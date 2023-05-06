@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CamFollowDray : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class CamFollowDray : MonoBehaviour
     [Header("Set in Inspector")]
     public InRoom drayInRm;
     public float transTime = 0.5f;
-
+    public static bool isDead = false;
     private Vector3 p0, p1;
 
     private InRoom inRm;
@@ -22,6 +23,10 @@ public class CamFollowDray : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.R) && isDead)
+        {
+            SceneManager.LoadScene("_Scene_Hat");
+        }
         if (TRANSITIONING)
         {
             float u = (Time.time - transStart) / transTime;
